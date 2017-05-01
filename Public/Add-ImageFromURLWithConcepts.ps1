@@ -57,10 +57,10 @@ function Add-ImageFromURLWithConcepts
   } | ConvertTo-Json -Depth 6
 
 	
-  #$jsonbody
+  $jsonbody
   Try 
   {
-    $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post -ErrorAction Stop
+    #$Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post -ErrorAction Stop
     $Res
   }
   Catch 
