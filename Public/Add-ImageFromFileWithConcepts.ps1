@@ -1,11 +1,11 @@
-﻿#requires
+#requires
 #requires -Version 3.0
-function Add-ImageFromURLWithConcepts
+function Add-ImageFromFileWithConcepts
 {
   [CmdletBinding()]
   param
   (
-    [string]$ImageURL,
+    [string]$ImagePath,
     [string]$Token = (Get-ClarifaiToken),
     [string[]]$Concepts,
     [string[]]$Not_Concepts
@@ -21,7 +21,7 @@ function Add-ImageFromURLWithConcepts
     'Content-Type' = 'application/json'
   }
 	
-
+  $base64 = [convert]::ToBase64String((Get-Content $ImagePath -Encoding byte))
 
   $Cons = @()
   Foreach ($Concept in $Concepts) 
@@ -42,22 +42,37 @@ function Add-ImageFromURLWithConcepts
   }
 
   	
-  $jsonbody = [ordered]@{
-    inputs = @(
-      [ordered]@{
-        data = @{
-          image    = @{
-            url = $ImageURL
-          }
-          concepts = @(
-            $Cons          
-          )
-        } 
-    })
-  } | ConvertTo-Json -Depth 6
+  #$jsonbody = [ordered]@{
+  #    inputs = @(
+  #      @{
+  #        data = @{
+  #          image = @{
+  #            base64 = $base64
+  #          }
+  #        }
+  #      }
+  #    )
+  #  }  | ConvertTo-Json -Depth 6
 
 	
-  $jsonbody
+  $jsonbody = [ordered]@{
+    inputs = @(
+      @{
+        data = @{
+          image    = @{
+            base64 = $base64
+          }
+          concepts = @(              
+            $Cons              
+          )
+        }
+      }
+    )
+  }| ConvertTo-Json -Depth 6
+
+
+
+ # $jsonbody
   Try 
   {
     $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post -ErrorAction Stop
@@ -65,8 +80,8 @@ function Add-ImageFromURLWithConcepts
   }
   Catch 
   {    
-    $Err = $($_.ErrorDetails.Message| convertfrom-json)
-    Write-Host  "$($Err.inputs.status.Description) "    
+    $Err = $($_.ErrorDetails.Message| ConvertFrom-Json)
+    Write-Host  -Object "$($Err.inputs.status.Description) "    
     Throw $_
   }
 }
