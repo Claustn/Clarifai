@@ -52,6 +52,6 @@ function Predict-ImageFromFile
   } | ConvertTo-Json -Depth 4
 	
 	
-  $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post
+  $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post 
   $Res.outputs.data.concepts
 }

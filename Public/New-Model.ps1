@@ -12,7 +12,7 @@
 	
   if ($Concepts_Mutually_Exclusive) 
   {
-    $Concepts_Mutually_Exclusive = $true 
+    $Concepts_Mutually_Exclusive = $true
   } 
   if ($Closed_Environment) 
   {
@@ -53,10 +53,9 @@
         }
       }
     }
-  } | ConvertTo-Json -Depth 6
-  
+  } | ConvertTo-Json -Depth 6 
 	
-  $jsonbody
+  Write-Debug -Message $jsonbody
   Try 
   {
     $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post -ErrorAction Stop
@@ -65,7 +64,7 @@
   Catch 
   {    
     $Err = $($_.ErrorDetails.Message| ConvertFrom-Json)
-    Write-Host  -Object "$($Err.inputs.status.Description) "    
+    Write-Output  -Object "$($Err.inputs.status.Description) "    
     Throw $_
   }
 }

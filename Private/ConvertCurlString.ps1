@@ -1,20 +1,20 @@
 ﻿$string = @'
 {
-      "models": [
+      "inputs": [
         {
-          "id": "{model_id}",
-          "output_info": {
-            "data": {
-              "concepts": [
-                {
-                  "id": "dogs"
-                }
-              ]
-            }
+          "data": {
+            "image": {
+              "url": "https://samples.clarifai.com/puppy.jpeg"
+            },
+            "concepts":[
+              {
+                "id": "boscoe",
+                "value": true
+              }
+            ]
           }
         }
-      ],
-      "action": "merge"
+      ]
     }
 '@
 
@@ -44,5 +44,6 @@ $b = @{
 #$a | clip
 #$string| convertto-json -Depth 6
 #$string''
+
 
 

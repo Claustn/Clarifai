@@ -1,14 +1,15 @@
-﻿function Get-Model
+﻿function Train-Model
 {
   [CmdletBinding()]
   param
   (
-  [string]$Token = (Get-ClarifaiToken) 
+    [string]$ModelName,
+    [string]$Token = (Get-ClarifaiToken)    
   )
 	
   
 	
-  $uri = 'https://api.clarifai.com/v2/models' 
+  $uri = "https://api.clarifai.com/v2/models/$ModelName/versions"
 	
   $headers = @{
     Authorization = 'Bearer {0}' -f $Token
@@ -19,8 +20,8 @@
 
   Try 
   {
-    $Res = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get -ErrorAction Stop
-    $Res.models
+    $Res = Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -ErrorAction Stop
+    $Res
   }
   Catch 
   {    
@@ -29,3 +30,4 @@
     Throw $_
   }
 }
+

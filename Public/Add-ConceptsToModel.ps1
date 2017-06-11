@@ -1,4 +1,5 @@
-﻿function Add-ConceptsToModel
+﻿#requires -Version 3.0
+function Add-ConceptsToModel
 {
   [CmdletBinding()]
   param
@@ -41,9 +42,8 @@
     })
     action = 'merge'
   } | ConvertTo-Json -Depth 6
-  
 	
-  $jsonbody
+  Write-Debug -Message $jsonbody
   Try 
   {
     $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Patch -ErrorAction Stop
@@ -52,7 +52,7 @@
   Catch 
   {    
     $Err = $($_.ErrorDetails.Message| ConvertFrom-Json)
-    Write-Host  -Object "$($Err.inputs.status.Description) "    
+    Write-Output  -Object "$($Err.inputs.status.Description) "    
     Throw $_
   }
 }

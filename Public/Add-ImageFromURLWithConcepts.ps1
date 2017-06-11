@@ -57,7 +57,7 @@ function Add-ImageFromURLWithConcepts
   } | ConvertTo-Json -Depth 6
 
 	
-  $jsonbody
+  Write-Debug -Message $jsonbody
   Try 
   {
     $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post -ErrorAction Stop
@@ -65,8 +65,8 @@ function Add-ImageFromURLWithConcepts
   }
   Catch 
   {    
-    $Err = $($_.ErrorDetails.Message| convertfrom-json)
-    Write-Host  "$($Err.inputs.status.Description) "    
+    $Err = $($_.ErrorDetails.Message| ConvertFrom-Json)
+    Write-Output  -Object "$($Err.inputs.status.Description) "    
     Throw $_
   }
 }

@@ -1,4 +1,3 @@
-#requires
 #requires -Version 3.0
 function Add-ImageFromFileWithConcepts
 {
@@ -41,18 +40,6 @@ function Add-ImageFromFileWithConcepts
     }
   }
 
-  	
-  #$jsonbody = [ordered]@{
-  #    inputs = @(
-  #      @{
-  #        data = @{
-  #          image = @{
-  #            base64 = $base64
-  #          }
-  #        }
-  #      }
-  #    )
-  #  }  | ConvertTo-Json -Depth 6
 
 	
   $jsonbody = [ordered]@{
@@ -70,9 +57,8 @@ function Add-ImageFromFileWithConcepts
     )
   }| ConvertTo-Json -Depth 6
 
-
-
- # $jsonbody
+  Write-Debug -Message $jsonbody
+ 
   Try 
   {
     $Res = Invoke-RestMethod -Uri $uri -Body $jsonbody -Headers $headers -Method Post -ErrorAction Stop
@@ -81,7 +67,7 @@ function Add-ImageFromFileWithConcepts
   Catch 
   {    
     $Err = $($_.ErrorDetails.Message| ConvertFrom-Json)
-    Write-Host  -Object "$($Err.inputs.status.Description) "    
+    Write-output  -Object "$($Err.inputs.status.Description) "    
     Throw $_
   }
 }
