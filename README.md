@@ -68,3 +68,4 @@ Finally you need to train your model
 - Validate input
 - Expand to cover more functionality
 - General clean up of code
+- Add help
